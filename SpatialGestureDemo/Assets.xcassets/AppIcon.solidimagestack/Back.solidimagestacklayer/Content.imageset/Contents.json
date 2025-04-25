@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "visionos_blue_gradient_background.png",
       "idiom" : "vision",
       "scale" : "2x"
     }

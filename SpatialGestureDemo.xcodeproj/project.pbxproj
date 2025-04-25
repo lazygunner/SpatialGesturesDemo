@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		54C799802DBB3CD0001858F4 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 54C7997F2DBB3CD0001858F4 /* RealityKitContent */; };
+		54C799962DBB3DD6001858F4 /* SpatialGestures in Frameworks */ = {isa = PBXBuildFile; productRef = 54C799952DBB3DD6001858F4 /* SpatialGestures */; };
+		54C799992DBB3EB4001858F4 /* SpatialGestures in Frameworks */ = {isa = PBXBuildFile; productRef = 54C799982DBB3EB4001858F4 /* SpatialGestures */; };
+		54C799ED2DBB5126001858F4 /* SpatialGestures in Frameworks */ = {isa = PBXBuildFile; productRef = 54C799EC2DBB5126001858F4 /* SpatialGestures */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C799802DBB3CD0001858F4 /* RealityKitContent in Frameworks */,
+				54C799992DBB3EB4001858F4 /* SpatialGestures in Frameworks */,
+				54C799962DBB3DD6001858F4 /* SpatialGestures in Frameworks */,
+				54C799ED2DBB5126001858F4 /* SpatialGestures in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +100,9 @@
 			name = SpatialGestureDemo;
 			packageProductDependencies = (
 				54C7997F2DBB3CD0001858F4 /* RealityKitContent */,
+				54C799952DBB3DD6001858F4 /* SpatialGestures */,
+				54C799982DBB3EB4001858F4 /* SpatialGestures */,
+				54C799EC2DBB5126001858F4 /* SpatialGestures */,
 			);
 			productName = SpatialGestureDemo;
 			productReference = 54C7997A2DBB3CD0001858F4 /* SpatialGestureDemo.app */;
@@ -123,6 +132,9 @@
 			);
 			mainGroup = 54C799712DBB3CD0001858F4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				54C799FC2DBB74A1001858F4 /* XCRemoteSwiftPackageReference "SpatialGestures" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 54C7997B2DBB3CD0001858F4 /* Products */;
 			projectDirPath = "";
@@ -176,6 +188,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -201,6 +214,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
@@ -348,10 +362,33 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		54C799FC2DBB74A1001858F4 /* XCRemoteSwiftPackageReference "SpatialGestures" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lazygunner/SpatialGestures";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		54C7997F2DBB3CD0001858F4 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
+		};
+		54C799952DBB3DD6001858F4 /* SpatialGestures */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpatialGestures;
+		};
+		54C799982DBB3EB4001858F4 /* SpatialGestures */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpatialGestures;
+		};
+		54C799EC2DBB5126001858F4 /* SpatialGestures */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpatialGestures;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

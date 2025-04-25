@@ -1,0 +1,15 @@
+{
+  "originHash" : "dcea3fc2d80b68eaf67755aa10f8e738b655eeb6a165aff0f888f36177206f6d",
+  "pins" : [
+    {
+      "identity" : "spatialgestures",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lazygunner/SpatialGestures",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7a52669c6d96f2646d414b9a1c013a1b35e828ec"
+      }
+    }
+  ],
+  "version" : 3
+}
