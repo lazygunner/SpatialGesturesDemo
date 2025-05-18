@@ -9,14 +9,19 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import SpatialGestures
+import AVFoundation
 
 struct ImmersiveView: View {
     @StateObject private var gestureManager = SpatialGestures.createManager(
         referenceAnchor: Entity(),
-        isDebugEnabled: true
+        enableMeshDetection: true,
+        showDebugVisualization: false,
+        isDebugEnabled: true,
+        rotationAxis: .y
     )
     @StateObject private var debugViewModel = DebugViewModel()
     var basicEntity = Entity()
+    @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
         RealityView { content, attachments in
@@ -34,6 +39,14 @@ struct ImmersiveView: View {
                     
                     robotEntity.position = SIMD3<Float>(-0.2, 1.4, -0.6)
                     
+                    // init audio
+                    do {
+                        let url = Bundle.main.url(forResource: "placement", withExtension: "mp3")
+                        audioPlayer = try AVAudioPlayer(contentsOf: url!)
+                    } catch {
+                        print("init audio failed: \(error)")
+                    }
+                    
                     // Set gesture callback
                     gestureManager.setGestureCallback { gestureInfo in
                         debugViewModel.addLog(gestureInfo)
@@ -46,6 +59,11 @@ struct ImmersiveView: View {
                                 scale: gestureInfo.transform.scale
                             )
                         }
+                        
+                        if gestureInfo.gestureType == .placement {
+                            // play sound
+                            audioPlayer?.play()
+                        }
                     }
                     
                     // Initialize entity properties
@@ -54,6 +72,13 @@ struct ImmersiveView: View {
                         rotation: robotEntity.orientation.convertToEulerAngles(),
                         scale: robotEntity.scale
                     )
+                    
+                    // Start Plane Detection
+                    Task {
+                        await gestureManager.startMeshDetection(
+                            rootEntity: basicEntity
+                        )
+                    }
                     
                 } catch {
                     print("error")
@@ -78,10 +103,19 @@ struct ImmersiveView: View {
                             )
                         }
                     }
+                } onToggleVis: {
+                    debugViewModel.showDebugVisualization.toggle()
+                    gestureManager.setMeshDetectionVisualization(debugViewModel.showDebugVisualization)
                 }
             }
         }
         .withSpatialGestures(manager: gestureManager)
+        .onDisappear {
+            Task {
+                await gestureManager.stopMeshDetection()
+                gestureManager.removeEntity(named: "Robot")
+            }
+        }
     }
 }
 
@@ -91,6 +125,7 @@ class DebugViewModel: ObservableObject {
     @Published var entityPosition: SIMD3<Float> = .zero
     @Published var entityRotation: SIMD3<Float> = .zero
     @Published var entityScale: SIMD3<Float> = SIMD3<Float>(1, 1, 1)
+    @Published var showDebugVisualization: Bool = false
     
     struct LogEntry: Identifiable {
         let id = UUID()
@@ -141,6 +176,8 @@ class DebugViewModel: ObservableObject {
             }
         case .gestureEnded:
             result += "Position: \(formatVector(info.transform.translation))  Rotation: \(formatVector(info.transform.rotation.convertToEulerAngles()))  Scale: \(formatVector(info.transform.scale))"
+        case .placement:
+            print("place")
         }
         
         return result
@@ -160,6 +197,8 @@ class DebugViewModel: ObservableObject {
             return "Scale"
         case .gestureEnded:
             return "Gesture Ended"
+        case .placement:
+            return "Placement"
         }
     }
 }
@@ -168,6 +207,7 @@ class DebugViewModel: ObservableObject {
 struct DebugOverlayView: View {
     @ObservedObject var viewModel: DebugViewModel
     var onReset: () -> Void
+    var onToggleVis: () -> Void
     
     var body: some View {
         VStack(spacing: 15) {
@@ -247,6 +287,15 @@ struct DebugOverlayView: View {
                     
                     Button(action: onReset) {
                         Text("Reset")
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .padding(.top, 10)
+                    
+                    Button(action: onToggleVis) {
+                        Text((viewModel.showDebugVisualization ? "Hide" : "Show") + " Mesh")
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
                     }
